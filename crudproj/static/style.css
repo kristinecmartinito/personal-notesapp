@@ -1,0 +1,47 @@
+body{
+    background-color: beige;
+}
+
+h2 {
+    color: #000000;
+    font-size: 40px;
+    font-weight: 800;
+}
+
+.notes {
+    padding:0% !important;
+}
+
+.notes-list {
+    list-style-type: none
+}
+
+
+.card-header {
+    background-color:#7aadff;
+}
+
+#editNoteModal {
+    display: none;
+}
+
+p.alert {
+    background:#c3ffba; 
+    border: solid 4px rgb(0, 0, 0);
+}
+
+.card {
+    width: 80%;
+}
+.card-body{
+    background:#ffffff;
+}
+
+@media only screen and (max-width: 768px) {
+    .container {
+        width: 98% !important;
+    }
+}
+
+
+

@@ -1,0 +1,95 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+    <head>
+    
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="{% static 'style.css' %}"/>
+        <script src="{% static 'script.js' %}"></script>
+        
+        <title>NOTES APP</title>
+
+    </head>
+    <body>
+        <h2 class="text-center m-5">MY NOTES APP</h2>
+
+        <div class="container mt-3 d-flex justify-content-center">
+            <div class="card">
+                <div class="card-body">
+
+                    {% for message in messages %}            
+                    <p class="alert mt-3">{{message}}</p>
+                    {% endfor %}
+                    <br>
+                    {% if sel_note %} 
+            
+                        <form method="POST" action="{% url 'update_note' sel_note.id %}">
+                        {% csrf_token %}
+                            <div class="form-group mb-3">
+                                <label >Note Name</label>
+                                <input type="text" class="form-control" value="{{sel_note.name}}" name="name" placeholder="Enter note name here">    
+                            </div>
+            
+                            <div class="form-group mb-3">
+                                <label >Description</label>
+                                <input type="text" class="form-control" value="{{sel_note.description}}" name="description" placeholder="Enter note description here">
+                            </div>
+                        
+                            <div class="text-center mt-4">
+                                <button type="submit" class="btn btn-success"><i class="fa fa-refresh"></i> UPDATE</button>
+                            </div>
+                        </form>
+            
+                    {% else %}
+                        <form method="POST" action="{% url 'add_note' %}">
+                            {% csrf_token %}
+                            <div class="form-group mb-3">
+                                <label>Note Name</label>
+                                <input type="text" class="form-control" name="name" placeholder="Enter note name here">    
+                            </div>
+            
+                            <div class="form-group mb-3">
+                                <label >Description</label>
+                                <textarea class="form-control" name="description" placeholder="Enter note description here"></textarea>
+                            </div>
+                        
+                            <div class="text-center mt-4">
+                                <button type="submit" class="btn btn-success"><i class="fa fa-plus"></i> ADD</button>
+                            </div>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- this is where the data is displayed. The data is displayed automatically after some requests (add,delete,update)-->
+        <div class="container mt-4" style="width: 70%;">
+
+            <!-- the for loop here is to access and display the objects in the notes_list (NOTES) individually -->
+            {% for i in notes_list %}
+            <ul class="notes">
+                <li class="notes-list">
+                    <div class="card mx-auto">
+                        <div class="card-header">
+                            <h4>{{i.name}}</h4>
+                        </div>
+                        <div class="card-body clearfix">
+                            <p class="card-text">{{i.description}}</p>
+                            <a href="{% url 'delete_note' i.id %}" class='pull-right btn btn-danger m-1'><i class="fa fa-trash"></i> DELETE</a>
+                            <a href="{% url 'edit_note' i.id %}" class='pull-right btn btn-warning m-1'><i class="fa fa-edit"></i> EDIT</a>                          
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            {% endfor %}
+        </div>
+
+       
+    </body>
+</html>
